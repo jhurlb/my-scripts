@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+
+clean_boohma_dump() {
+  perl -pe 's/\sDEFINER=`[^`]+`@`[^`]+`//' < boohma.sql > boohma_no_definers.sql
+}
+
+hb() {
+  go install bitbucket.org/billups/harebrane/cmd/harebraneserver
+  harebraneserver ~/Projects/harebrane
+}
+
+goct() {
+  dir=$PWD
+  go test -covermode=count -coverprofile=profile.tmp
+  go tool cover -html profile.tmp
+  rm profile.tmp
+}
+
+vg() {
+    command=$1
+    case $command in
+
+        -p|provision )
+            vagrant provision
+            ;;
+
+        -s|ssh )
+            vagrant ssh
+            ;;
+
+        -d|deploy )
+            export DEPLOY_USER=ci
+            export DEPLOY_SERVER=192.168.0.50
+            export DEPLOY_BRANCH=${2:-"develop"}
+            export DEPLOY_VHOST=${3:-"boohma.com"}
+            rbenv exec cap ci deploy
+            ;;
+
+        *)
+            echo "usage: vg [-p|provison, -s|ssh, -d|deploy [branch] [vhost]]"
+            ;;
+    esac
+}
+
