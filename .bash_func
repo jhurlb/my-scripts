@@ -6,12 +6,16 @@ clean_boohma_dump() {
 }
 
 hb() {
-  go install bitbucket.org/billups/harebrane/cmd/harebraneserver
-  harebraneserver ~/Projects/harebrane
+  go install github.com/Billups/harebrane/cmd/harebraneserver
+  harebraneserver ~/Projects/go/src/github.com/Billups/harebrane
+}
+
+fr() {
+  go install bitbucket.org/billups/freki/cmd/frekiserver
+  frekiserver ~/Projects/go/src/github.com/Billups/freki
 }
 
 goct() {
-  dir=$PWD
   go test -covermode=count -coverprofile=profile.tmp
   go tool cover -html profile.tmp
   rm profile.tmp
@@ -31,7 +35,7 @@ vg() {
 
         -d|deploy )
             export DEPLOY_USER=ci
-            export DEPLOY_SERVER=192.168.0.50
+            export DEPLOY_SERVER=192.168.0.51
             export DEPLOY_BRANCH=${2:-"develop"}
             export DEPLOY_VHOST=${3:-"boohma.com"}
             rbenv exec cap ci deploy
@@ -42,4 +46,3 @@ vg() {
             ;;
     esac
 }
-
