@@ -5,14 +5,56 @@ clean_boohma_dump() {
   perl -pe 's/\sDEFINER=`[^`]+`@`[^`]+`//' < boohma.sql > boohma_no_definers.sql
 }
 
-hb() {
-  go install github.com/Billups/harebrane/cmd/harebraneserver
-  harebraneserver ~/Projects/go/src/github.com/Billups/harebrane
+proj() {
+    cd "$HOME/Projects/$1" || exit
 }
 
-fr() {
-  go install bitbucket.org/billups/freki/cmd/frekiserver
-  frekiserver ~/Projects/go/src/github.com/Billups/freki
+g2() {
+  cd "$HOME/Projects/go/src/github.com/Billups/$1" || echo "Could not find go project $1"
+}
+
+serve() {
+    command=$1
+    case $command in
+        hb )
+            (g2 harebrane && \
+            go install github.com/Billups/harebrane/cmd/harebraneserver && \
+            harebraneserver ./)
+            ;;
+        geo )
+            (g2 geo && \
+            go install github.com/Billups/geo/cmd/geoserver && \
+            geoserver ./)
+            ;;
+        gogrid )
+            (g2 gogrid && \
+            go install github.com/Billups/gogrid/cmd/gogrid && \
+            gogrid ./)
+            ;;
+        demos )
+            (proj demos && \
+            pyenv exec python run.py)
+            ;;
+        tiles )
+            (proj TileStache && \
+            ./scripts/tilestache-server.py --include-path "$PWD" -c "./tilestache.cfg" -p 29090)
+            ;;
+        redis )
+            (cd ~/Docker/redis || exit && \
+            dc up -d )
+            ;;
+        mariadb )
+            (cd ~/Docker/mariadb || exit && \
+            dc up -d)
+            ;;
+        keycloak )
+            (cd ~/Projects/keycloak || exit && \
+            dc up -d )
+            ;;
+        *)
+            echo "usage: serve [hb, geo, gogrid, demos, tiles, redis, mariadb, keycloak]"
+            ;;
+    esac
 }
 
 goct() {
@@ -24,15 +66,12 @@ goct() {
 vg() {
     command=$1
     case $command in
-
         -p|provision )
             vagrant provision
             ;;
-
         -s|ssh )
             vagrant ssh
             ;;
-
         -d|deploy )
             export DEPLOY_USER=ci
             export DEPLOY_SERVER=192.168.0.51
@@ -40,7 +79,6 @@ vg() {
             export DEPLOY_VHOST=${3:-"boohma.com"}
             rbenv exec cap ci deploy
             ;;
-
         *)
             echo "usage: vg [-p|provison, -s|ssh, -d|deploy [branch] [vhost]]"
             ;;

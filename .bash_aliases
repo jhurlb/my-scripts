@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-alias tv.disable="sudo launchctl disable system/com.teamviewer.service"
-alias tv.enable="sudo launchctl enable system/com.teamviewer.service"
-
 alias gs="git status"
 
 alias ls="ls -G"
