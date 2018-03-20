@@ -1,0 +1,17 @@
+#!/bin/bash
+
+_projComplete()
+{
+    local cur=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -W "$(ls $HOME/Projects)" -- $cur) )
+}
+
+_goComplete()
+{
+    local cur=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -W "$(ls $HOME/Projects/go/src/github.com/Billups)" -- $cur) )
+}
+
+complete -F _projComplete proj
+complete -F _projComplete at
+complete -F _goComplete g2

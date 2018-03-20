@@ -5,6 +5,7 @@
 . "$HOME/Projects/my-scripts/.bash_env"
 # shellcheck source=/usr/local/etc/bash_completion.d/git-prompt.sh
 . "$(brew --prefix)/etc/bash_completion.d/git-prompt.sh"
+. "$(brew --prefix)/etc/bash_completion.d/my-commands.bash"
 # shellcheck source=/Users/jhurlburt/Projects/my-scripts/.bash_prompt
 . "$HOME/Projects/my-scripts/.bash_prompt"
 # shellcheck source=/Users/jhurlburt/Projects/my-scripts/.bash_aliases
