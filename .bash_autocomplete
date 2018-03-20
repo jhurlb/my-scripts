@@ -1,15 +1,17 @@
 #!/bin/bash
 
+# complete project names
 _projComplete()
 {
     local cur=${COMP_WORDS[COMP_CWORD]}
-    COMPREPLY=( $(compgen -W "$(ls $HOME/Projects)" -- $cur) )
+    COMPREPLY=( $(compgen -W "$(ls "$HOME"/Projects)" -- "$cur") )
 }
 
+# complete golang project names
 _goComplete()
 {
     local cur=${COMP_WORDS[COMP_CWORD]}
-    COMPREPLY=( $(compgen -W "$(ls $HOME/Projects/go/src/github.com/Billups)" -- $cur) )
+    COMPREPLY=( $(compgen -W "$(ls "$HOME"/Projects/go/src/github.com/Billups)" -- "$cur") )
 }
 
 complete -F _projComplete proj
