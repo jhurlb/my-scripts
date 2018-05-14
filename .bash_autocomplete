@@ -4,16 +4,23 @@
 _projComplete()
 {
     local cur=${COMP_WORDS[COMP_CWORD]}
-    COMPREPLY=( $(compgen -W "$(ls "$HOME"/Projects)" -- "$cur") )
+    COMPREPLY=( $(compgen -W "$(ls "$HOME"/Projects/src)" -- "$cur") )
+}
+
+# complete docker names
+_docComplete()
+{
+    local cur=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -W "$(ls "$HOME"/Projects/docker)" -- "$cur") )
 }
 
 # complete golang project names
 _goComplete()
 {
     local cur=${COMP_WORDS[COMP_CWORD]}
-    COMPREPLY=( $(compgen -W "$(ls "$HOME"/Projects/go/src/github.com/Billups)" -- "$cur") )
+    COMPREPLY=( $(compgen -W "$(ls "$HOME"/Projects/src/go/src/github.com/Billups)" -- "$cur") )
 }
 
 complete -F _projComplete proj
-complete -F _projComplete at
+complete -F _docComplete doc
 complete -F _goComplete g2
