@@ -5,16 +5,20 @@ clean_boohma_dump() {
   perl -pe 's/\sDEFINER=`[^`]+`@`[^`]+`//' < boohma.sql > boohma_no_definers.sql
 }
 
+mv2dir() {
+    cd "$HOME/Projects/$1/$2"
+}
+
 proj() {
-    cd "$HOME/Projects/src/$1" || exit
+    mv2dir "src" "$1"
 }
 
 doc() {
-    cd "$HOME/Projects/docker/$1" || exit
+    mv2dir "docker" "$1"
 }
 
 g2() {
-  cd "$HOME/Projects/src/go/src/github.com/Billups/$1" || echo "Could not find go project $1"
+   mv2dir "go/src/github.com/Billups" "$1"
 }
 
 serve() {
@@ -44,49 +48,14 @@ serve() {
                 (proj tilestache && \
                 dc up -d)
                 ;;
-            redis )
-                (doc redis || exit && \
+            help)
+                echo "usage: serve [demos, geo, gogrid, hb, keycloak, mariadb, nginx, redis, tiles]"
+                ;;
+            * )
+                (doc $1 && \
                 dc up -d )
                 ;;
-            mariadb )
-                (doc mariadb || exit && \
-                dc up -d)
-                ;;
-            keycloak )
-                (doc keycloak || exit && \
-                dc up -d )
-                ;;
-            *)
-                echo "usage: serve [hb, geo, gogrid, demos, tiles, redis, mariadb, keycloak]"
-                ;;
+
         esac
     done
-}
-
-goct() {
-  go test -covermode=count -coverprofile=profile.tmp
-  go tool cover -html profile.tmp
-  rm profile.tmp
-}
-
-vg() {
-    command=$1
-    case $command in
-        -p|provision )
-            vagrant provision
-            ;;
-        -s|ssh )
-            vagrant ssh
-            ;;
-        -d|deploy )
-            export DEPLOY_USER=ci
-            export DEPLOY_SERVER=192.168.0.51
-            export DEPLOY_BRANCH=${2:-"develop"}
-            export DEPLOY_VHOST=${3:-"boohma.com"}
-            rbenv exec cap ci deploy
-            ;;
-        *)
-            echo "usage: vg [-p|provison, -s|ssh, -d|deploy [branch] [vhost]]"
-            ;;
-    esac
 }
