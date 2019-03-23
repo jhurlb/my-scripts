@@ -7,8 +7,6 @@
 . "$(brew --prefix)/etc/bash_completion.d/git-prompt.sh"
 # shellcheck source=/Users/justinhurlburt/.bash_completion.d/my-commands
 . "$HOME/.bash_completion.d/my-commands"
-# shellcheck source=/Users/justinhurlburt/Projects/src/my-scripts/.bash_helpers
-. "$HOME/Projects/src/my-scripts/.bash_helpers"
 # shellcheck source=/Users/justinhurlburt/Projects/src/my-scripts/.bash_prompt
 . "$HOME/Projects/src/my-scripts/.bash_prompt"
 # shellcheck source=/Users/justinhurlburt/Projects/src/my-scripts/.bash_aliases
