@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 clean_boohma_dump() {
   perl -pe 's/\sDEFINER=`[^`]+`@`[^`]+`//' < boohma.sql > boohma_no_definers.sql
 }
@@ -17,8 +16,14 @@ doc() {
     mv2dir "docker" "$1"
 }
 
-g2() {
-   mv2dir "go/src/github.com/Billups" "$1"
+watch() {
+    while :;
+    do
+        clear
+        date
+        $1
+        sleep ${2:-1}
+    done
 }
 
 serve() {
@@ -26,7 +31,7 @@ serve() {
     do
         case $command in
             hb )
-                (g2 harebrane && \
+                (proj harebrane && \
                 go install github.com/Billups/harebrane/cmd/harebraneserver && \
                 harebraneserver ./)
                 ;;

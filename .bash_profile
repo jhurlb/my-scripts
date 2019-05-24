@@ -19,5 +19,7 @@
 # GIT PROMPT
 # export GIT_PS1_SHOWUPSTREAM="auto"
 
-export PATH="$(pyenv root)/shims:/usr/local/sbin:$PATH"
+#export PATH="$(pyenv root)/shims:/usr/local/sbin:$PATH"
+eval "$(pyenv init -)"
+eval "$(nodenv init -)"
 export GPG_TTY=$(tty)
