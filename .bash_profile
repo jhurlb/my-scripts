@@ -21,5 +21,7 @@
 
 #export PATH="$(pyenv root)/shims:/usr/local/sbin:$PATH"
 eval "$(pyenv init -)"
+eval "$(rbenv init -)"
 eval "$(nodenv init -)"
 export GPG_TTY=$(tty)
+export PATH="/usr/local/opt/terraform@0.11/bin:$PATH"

@@ -64,3 +64,30 @@ serve() {
         esac
     done
 }
+
+bounce() {
+    cluster=${1:-edge}
+    branch="develop"
+    [[ $cluster != "edge" ]] && branch="master"
+    retval=0
+    apps=${2:-"audience demos doohan esapis geo gogrid gophoto harebrane pitch snapshot swordfish thicc zisa"}
+    for app in $apps
+    do
+        if [ $retval -eq 0 ]; then
+            echo "bouncing ${app}-${branch} in ${cluster}..."
+            aws ecs update-service --force-new-deployment --service "${app}-${branch}" --cluster "${cluster}" --region us-west-2
+            retval=$?
+        else
+            echo "last command failed, aborting!"
+            break
+        fi
+    done
+}
+
+analyze_s3_buckets() {
+    for path in $1
+    do
+        echo "analyzing boohma-hivemeta/dbc-88002245-52a4/0/data/$path"
+        AWS_PROFILE=billups-sciences aws s3 ls --summarize --human-readable --recursive "s3://boohma-hivemeta/dbc-88002245-52a4/0/data/$path" | grep "Total Size:"
+    done
+}
